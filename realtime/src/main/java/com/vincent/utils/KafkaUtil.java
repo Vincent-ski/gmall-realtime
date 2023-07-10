@@ -1,7 +1,5 @@
 package com.vincent.utils;
 
-import javassist.Loader;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
@@ -11,7 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.Properties;
 
-public class MyKafkaUtil {
+public class KafkaUtil {
 
     public static FlinkKafkaConsumer<String> getFlinkKafkaConsumer(String kafka_server, String topic, String groupId){
 
