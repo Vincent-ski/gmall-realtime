@@ -43,7 +43,7 @@ public class DimApp {
         String server = "linux1:9092";
         String topic = "topic_db";
         String groupid = "dim_app";
-        DataStreamSource<String> kafkaDS = env.addSource(KafkaUtil.getFlinkKafkaConsumer(server, topic, groupid));
+        DataStreamSource<String> kafkaDS = env.addSource(KafkaUtil.getKafkaConsumer(server, topic, groupid));
 
         //TODO 3.过滤掉非json数据 & 保留增删改以及初始化数据
         SingleOutputStreamOperator<JSONObject> jsonObjectSingleOutputStreamOperator = kafkaDS.flatMap(new FlatMapFunction<String, JSONObject>() {
