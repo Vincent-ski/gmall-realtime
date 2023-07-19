@@ -71,4 +71,65 @@ public class KafkaUtil {
         return producer;
     }
 
+    /**
+     * UpsertKafka-Sink DDL 语句
+     *
+     * @param topic 输出到 Kafka 的目标主题
+     * @return 拼接好的 UpsertKafka-Sink DDL 语句
+     */
+    public static String getUpsertKafkaDDL(String bootstrap_servers,String topic) {
+
+        return "WITH ( " +
+                "  'connector' = 'upsert-kafka', " +
+                "  'topic' = '" + topic + "', " +
+                "  'properties.bootstrap.servers' = '" + bootstrap_servers + "', " +
+                "  'key.format' = 'json', " +
+                "  'value.format' = 'json' " +
+                ")";
+    }
+
+
+    /**
+     * Kafka-Source DDL 语句
+     *
+     * @param topic   数据源主题
+     * @param groupId 消费者组
+     * @return 拼接好的 Kafka 数据源 DDL 语句
+     */
+    public static String getKafkaDDL(String bootstrap_servers, String topic, String groupId) {
+
+        return " with ('connector' = 'kafka', " +
+                " 'topic' = '" + topic + "'," +
+                " 'properties.bootstrap.servers' = '" + bootstrap_servers + "', " +
+                " 'properties.group.id' = '" + groupId + "', " +
+                " 'format' = 'json', " +
+                " 'scan.startup.mode' = 'group-offsets')";
+    }
+
+    public static String getTopicDb(String bootstrap_servers, String groupId){
+        return "create table topic_db( " +
+                "`database` string, " +
+                "`table` string, " +
+                "`type` string, " +
+                "`data` map<string, string>, " +
+                "`old` map<string, string>, " +
+                "`ts` string, " +
+                "`proc_time` as PROCTIME() " +
+                ") " + getKafkaDDL(bootstrap_servers,"topic_db", groupId);
+    }
+
+    /**
+     * Kafka-Sink DDL 语句
+     *
+     * @param topic 输出到 Kafka 的目标主题
+     * @return 拼接好的 Kafka-Sink DDL 语句
+     */
+    public static String getKafkaSinkDDL(String bootstrap_servers, String topic) {
+        return "WITH ( " +
+                "  'connector' = 'kafka', " +
+                "  'topic' = '" + topic + "', " +
+                "  'properties.bootstrap.servers' = '" + bootstrap_servers + "', " +
+                "  'format' = 'json' " +
+                ")";
+    }
 }

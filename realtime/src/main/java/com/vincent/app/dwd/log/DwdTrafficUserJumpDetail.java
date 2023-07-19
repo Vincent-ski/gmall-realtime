@@ -6,21 +6,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.vincent.utils.KafkaUtil;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
-import org.apache.flink.api.common.time.Time;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternFlatSelectFunction;
 import org.apache.flink.cep.PatternFlatTimeoutFunction;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
-import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
-import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
@@ -31,8 +26,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-public class
-DwdTrafficUserJumpDetail {
+public class DwdTrafficUserJumpDetail {
     public static void main(String[] args) throws Exception {
 
         // TODO 1. 环境准备
@@ -148,7 +142,7 @@ DwdTrafficUserJumpDetail {
         String brokerLisk = "linux1:9092";
         String targetTopic = "dwd_traffic_user_jump_detail";
         FlinkKafkaProducer<String> kafkaProducer = KafkaUtil.getKafkaProducer(brokerLisk, targetTopic);
-        unionDStream .map(JSONAware::toJSONString)
+        unionDStream.map(JSONAware::toJSONString)
                 .addSink(kafkaProducer);
 
         env.execute();
