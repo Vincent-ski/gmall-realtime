@@ -25,9 +25,10 @@ public class DwdTradeOrderPreProcess {
         // 获取配置对象
         Configuration configuration = tableEnv.getConfig().getConfiguration();
         // 为表关联时状态中存储的数据设置过期时间
-        configuration.setString("table.exec.state.ttl", "5 s");
+        configuration.setString("table.exec.state.ttl", "5s");
 
         // TODO 2. 启用状态后端
+        /*
         env.enableCheckpointing(3000L, CheckpointingMode.EXACTLY_ONCE);
         env.getCheckpointConfig().setCheckpointTimeout(60 * 1000L);
         env.getCheckpointConfig().enableExternalizedCheckpoints(
@@ -42,6 +43,7 @@ public class DwdTradeOrderPreProcess {
         System.setProperty("HADOOP_USER_NAME", "vincent");
 
         tableEnv.getConfig().setLocalTimeZone(ZoneId.of("GMT+8"));
+        */
 
         // TODO 3. 从 Kafka 读取业务数据，封装为 Flink SQL 表
         tableEnv.executeSql("create table topic_db(" +
